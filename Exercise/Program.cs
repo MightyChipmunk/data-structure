@@ -11,8 +11,8 @@ namespace Exercise
             { 0, 1, 0, 1, 0, 0 },
             { 1, 0, 1, 1, 0, 0 },
             { 0, 1, 0, 0, 0, 0 },
-            { 1, 1, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 1 },
+            { 1, 1, 0, 0, 1, 0 },
+            { 0, 0, 0, 1, 0, 1 },
             { 0, 0, 0, 0, 1, 0 }
         };
 
@@ -21,8 +21,8 @@ namespace Exercise
             new List<int>() { 1, 3 },
             new List<int>() { 0, 2, 3 },
             new List<int>() { 1 },
-            new List<int>() { 0, 1 },
-            new List<int>() { 5 },
+            new List<int>() { 0, 1, 4 },
+            new List<int>() { 3, 5 },
             new List<int>() { 4 }
         };
 
@@ -57,7 +57,7 @@ namespace Exercise
             }
         }
 
-        public void SearchAll()
+        public void SearchAllDFS()
         {
             visited = new bool[6];
             for(int now = 0; now < 6; now++)
@@ -66,15 +66,38 @@ namespace Exercise
                     DFS(now);
             }
         }
+
+        public void BFS(int start)
+        {
+            bool[] found = new bool[6];
+
+            Queue<int> q = new Queue<int> ();
+            q.Enqueue (start);
+            found[start] = true;
+
+            while(q.Count > 0)
+            {
+                int now = q.Dequeue();
+                Console.WriteLine(now);
+
+                for (int next = 0; (next < 6); next++)
+                {
+                    if (adj[now, next] == 0) // 연결되지 않았으면 스킵
+                        continue;
+                    if (found[next]) // 이미 발견한 애라면 스킵
+                        continue;
+                    q.Enqueue (next);
+                    found[next] = true; 
+                }
+            }
+        }
     }
     class Program
     {
         static void Main(string[] args)
         {
             Graph graph = new Graph();
-            graph.DFS(0);
-            Console.WriteLine();
-            graph.SearchAll();
+            graph.BFS(0);
         }
     }
 }
