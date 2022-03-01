@@ -209,10 +209,10 @@ namespace Exercise
     }
     #endregion
 
-    class PriorityQueue
+    class PriorityQueue<T> where T : IComparable<T>
     {
-        List<int> _heap = new List<int>();
-        public void Push(int data)
+        List<T> _heap = new List<T>();
+        public void Push(T data)
         {
             // 힙의 맨 끝에 새로운 데이터를 삽입한다.
             _heap.Add(data);
@@ -223,11 +223,11 @@ namespace Exercise
             {
                 // 도장깨기를 시도
                 int next = (now -1) / 2;
-                if (_heap[now] < _heap[next])
+                if (_heap[now].CompareTo(_heap[next]) < 0)
                     break; //실패
 
                 // 두 값을 교체한다
-                int temp = _heap[now];
+                T temp = _heap[now];
                 _heap[now] = _heap[next];
                 _heap[next] = temp;
 
@@ -236,10 +236,10 @@ namespace Exercise
             }
         }
 
-        public int Pop()
+        public T Pop()
         {
             // 반환할 데이터를 따로 저장
-            int ret = _heap[0];
+            T ret = _heap[0];
 
             // 마지막 데이터를 루트로 이동한다
             int lastIndex = _heap.Count - 1;
@@ -256,10 +256,10 @@ namespace Exercise
 
                 int next = now;
                 // 왼쪽 값이 현재 값보다 크면 왼쪽으로 이동
-                if (left <= lastIndex && _heap[next] < _heap[left])
+                if (left <= lastIndex && _heap[next].CompareTo(_heap[left]) < 0)
                     next = left;
                 // 오른쪽 값이 현재 값(왼쪽 값 포함)보다 크면 오른쪽으로 이동
-                if (right <= lastIndex && _heap[next] < _heap[right])
+                if (right <= lastIndex && _heap[next].CompareTo(_heap[right]) < 0)
                     next = right;
 
                 // 왼쪽/오른쪽 모두 현재값보다 작으면 종료
@@ -267,7 +267,7 @@ namespace Exercise
                     break;
 
                 // 두 값을 교체한다
-                int temp = _heap[now];
+                T temp = _heap[now];
                 _heap[now] = _heap[next];
                 _heap[next] = temp;
                 // 검사 위치를 이동한다
@@ -287,7 +287,7 @@ namespace Exercise
     {
         static void Main(string[] args)
         {
-            PriorityQueue q = new PriorityQueue();
+            PriorityQueue<int> q = new PriorityQueue<int>();
             q.Push(20);
             q.Push(10);
             q.Push(30);
